@@ -1,7 +1,7 @@
 # Versions
 
-- [`5.6-fpm`, `latest` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/blob/master/5.6/fpm/Dockerfile)
-- [`7.0.0RC7-fpm`, (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/blob/master/7.0/fpm/Dockerfile)
+- [`5.6-fpm`, `latest` (_5.6/fpm/Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/blob/master/5.6/fpm/Dockerfile)
+- [`7.0.0RC7-fpm` (_7.0/fpm/Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/blob/master/7.0/fpm/Dockerfile)
 
 # Description
 
