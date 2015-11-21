@@ -1,6 +1,7 @@
 # Versions
 
 - [`5.6-fpm`, `latest` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/blob/master/5.6/fpm/Dockerfile)
+- [`7.0.0RC7-fpm`, (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/blob/master/7.0/fpm/Dockerfile)
 
 # Description
 
@@ -41,4 +42,4 @@ By default, you should place application code in `/src`, or attach a volume at t
 
 `docker run --rm --name mysite -v /Users/username/Sites/mysite/src:/src mageinferno/magento2-php ./bin/magento`
 
-This image can also be ran as a container attached to an Nginx or Apache server. Please see [`https://github.com/mageinferno/magento2-docker-compose`](https://github.com/mageinferno/magento2-docker-compose) for more detailed instructions and an example development environment using Docker Compose.
+This image can also be ran as a container attached to an Nginx or Apache server. Please see <a href="https://github.com/mageinferno/magento2-docker-compose" target="_blank">https://github.com/mageinferno/magento2-docker-compose</a> for more detailed instructions and an example development environment using Docker Compose.
