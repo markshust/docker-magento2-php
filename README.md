@@ -12,11 +12,7 @@ This image is built from the official [`php`](https://hub.docker.com/_/php/) rep
 This image installs the following base packages:
 
 - `composer`
-- `git`
-- `grunt`
-- `nodejs`
 - `php-fpm`
-- `vim`
 
 This image also installs the following PHP extensions, which are the minimally required extensions to install and run Magento 2:
 
@@ -28,9 +24,9 @@ This image also installs the following PHP extensions, which are the minimally r
 - `xsl`
 - `zip`
 
-The following line is included to run proper filesystem permissions when using ['Dinghy'](https://github.com/codekitchen/dinghy) on OS X.
+A new `magento` user is created that belongs to the web server group, and the following lines are included to run proper filesystem permissions when using ['Boot2Docker'](http://boot2docker.io/) or ['Dinghy'](https://github.com/codekitchen/dinghy) on OS X:
 
-`RUN usermod -u 501 www-data`
+`usermod -u 501 magento && usermod -u 1000 magento`
 
 # How to use this image?
 
