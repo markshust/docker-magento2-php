@@ -24,9 +24,9 @@ This image also installs the following PHP extensions, which are the minimally r
 - `xsl`
 - `zip`
 
-A new `magento` user is created that belongs to the web server group, and the following lines are included to run proper filesystem permissions when using ['Boot2Docker'](http://boot2docker.io/) or ['Dinghy'](https://github.com/codekitchen/dinghy) on OS X:
+A new `magento` user is created that belongs to the web server group, and the following line is included to run proper filesystem permissions when using ['Dinghy'](https://github.com/codekitchen/dinghy) on OS X:
 
-`usermod -u 501 magento && usermod -u 1000 magento`
+`usermod -u 501 magento`
 
 # How to use this image?
 

@@ -29,7 +29,6 @@ COPY php-fpm.conf /usr/local/etc/
 
 RUN useradd -p $(openssl passwd -1 magento) magento \
   && adduser magento www-data \
-  && usermod -u 501 magento \
-  && usermod -u 1000 magento
+  && usermod -u 501 magento
 
 WORKDIR /src
