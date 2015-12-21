@@ -1,7 +1,6 @@
 # Versions
 
-- [`7.0-fpm`, `latest` (_7.0/fpm/Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/blob/master/7.0/fpm/Dockerfile)
-- [`5.6-fpm` (_5.6/fpm/Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/blob/master/5.6/fpm/Dockerfile)
+- [`5.6.16-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6.16-fpm-0/Dockerfile)
 
 # Description
 
@@ -12,11 +11,7 @@ This image is built from the official [`php`](https://hub.docker.com/_/php/) rep
 This image installs the following base packages:
 
 - `composer`
-- `git`
-- `grunt`
-- `nodejs`
 - `php-fpm`
-- `vim`
 
 This image also installs the following PHP extensions, which are the minimally required extensions to install and run Magento 2:
 
@@ -28,11 +23,26 @@ This image also installs the following PHP extensions, which are the minimally r
 - `xsl`
 - `zip`
 
-The following line is included to run proper filesystem permissions when using ['Dinghy'](https://github.com/codekitchen/dinghy) on OS X.
-
-`RUN usermod -u 501 www-data`
-
 # How to use this image?
+
+This image will work out-of-the-box with Linux-based systems.
+
+To use this image on other systems for local development, creating a Dockerfile in the root of your project with anything specific to your local development platform.
+
+For example, if using [Dinghy](https://github.com/codekitchen/dinghy) on OS X, use:
+
+```
+FROM mageinferno/magento2-php:[TAG]
+RUN usermod -u 501 www-data
+```
+
+Then build your custom image:
+
+```
+docker build -t myname/php .
+```
+
+# One-off containers
 
 This image can run one-off PHP commands, such as:
 
@@ -42,4 +52,6 @@ By default, you should place application code in `/src`, or attach a volume at t
 
 `docker run --rm --name mysite -v /Users/username/Sites/mysite/src:/src mageinferno/magento2-php ./bin/magento`
 
-This image can also be ran as a container attached to an Nginx or Apache server. Please see <a href="https://github.com/mageinferno/magento2-docker-compose" target="_blank">https://github.com/mageinferno/magento2-docker-compose</a> for more detailed instructions and an example development environment using Docker Compose.
+# Docker Compose
+
+Please see [https://github.com/mageinferno/magento2-docker-compose](https://github.com/mageinferno/magento2-docker-compose) for more detailed instructions and an example development environment using Docker Compose.
