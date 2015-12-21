@@ -27,4 +27,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY php.ini /usr/local/etc/php/
 COPY php-fpm.conf /usr/local/etc/
 
+RUN useradd -p $(openssl passwd -1 magento) magento \
+  && usermod -a -G www-data magento \
+  && usermod -a -G magento www-data
+
 WORKDIR /src

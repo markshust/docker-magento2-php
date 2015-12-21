@@ -28,13 +28,13 @@ This image also installs the following PHP extensions, which are the minimally r
 
 This image will work out-of-the-box with Linux-based systems.
 
-To use this image on other systems for local development, creating a Dockerfile in the root of your project with anything specific to your local development platform.
+To use this image on other systems for local development, create a Dockerfile with anything specific to your local development platform.
 
 For example, if using [Dinghy](https://github.com/codekitchen/dinghy) on OS X, use:
 
 ```
 FROM mageinferno/magento2-php:[TAG]
-RUN usermod -u 501 www-data
+RUN usermod -u 501 magento
 ```
 
 Then build your custom image:
