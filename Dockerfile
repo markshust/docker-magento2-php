@@ -42,10 +42,10 @@ ENV PHP_PM_MIN_SPARE_SERVERS 2
 ENV PHP_PM_MAX_SPARE_SERVERS 6
 ENV APP_MAGE_MODE default
 
-COPY php.ini /usr/local/etc/php/
-COPY php-fpm.conf /usr/local/etc/
-COPY ./start.sh /usr/local/bin/start.sh
+COPY conf/php.ini /usr/local/etc/php/
+COPY conf/php-fpm.conf /usr/local/etc/
+COPY bin/* /usr/local/bin/
 
 WORKDIR /src
 
-CMD ["/usr/local/bin/start.sh"]
+CMD ["/usr/local/bin/start"]
