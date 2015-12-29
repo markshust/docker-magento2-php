@@ -9,12 +9,12 @@ fi
 if [ "$M2SETUP_USE_ARCHIVE" = true ]; then
   echo "Downloading and untarring archive..."
   if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
-    curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-2.0.0-sd.tar.gz | tar xzf - -o -C /src
+    curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-$M2SETUP_VERSION-sd.tar.gz | tar xzf - -o -C /src
   else
-    curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-2.0.0.tar.gz | tar xzf - -o -C /src
+    curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C /src
   fi
 else
-  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.0.0 /src
+  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION /src
 fi
 
 chmod +x /src/bin/magento
