@@ -1,25 +1,36 @@
 #!/bin/sh
 echo "Initializing setup..."
 
-/usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.0.0 /src
+if [ -f /src/app/etc/config.php ] || [ -f /src/app/etc/env.php ]; then
+  echo "It appears Magento is already installed (app/etc/config.php or app/etc/env.php exist). Exiting setup..."
+  exit
+fi
+
+if [ "$M2SETUP_USE_ARCHIVE" = true ]; then
+  echo "Downloading and untarring archive..."
+  if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
+    curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-2.0.0-sd.tar.gz | tar xzf - -o -C /src
+  else
+    curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-2.0.0.tar.gz | tar xzf - -o -C /src
+  fi
+else
+  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.0.0 /src
+fi
 
 chmod +x /src/bin/magento
 
 if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
-  echo "Installing composer dependencies..."
-  /usr/local/bin/php -d memory_limit=2G /src/bin/magento sampledata:deploy
+  if [ "$M2SETUP_USE_ARCHIVE" != true ]; then
+    echo "Installing composer dependencies..."
+    /usr/local/bin/php -d memory_limit=2G /src/bin/magento sampledata:deploy
 
-  echo "Ignore the above error (bug in Magento), fixing with 'composer update'..."
-  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer update --working-dir=/src
+    echo "Ignore the above error (bug in Magento), fixing with 'composer update'..."
+    /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer update --working-dir=/src
+  fi
 
   M2SETUP_USE_SAMPLE_DATA_STRING="--use-sample-data"
 else
   M2SETUP_USE_SAMPLE_DATA_STRING=""
-fi
-
-if [ -f /src/app/etc/config.php ] || [ -f /src/app/etc/env.php ]; then
-  echo "Already installed? Either app/etc/config.php or app/etc/env.php exist, please remove both files to continue setup."
-  exit
 fi
 
 echo "Running Magento 2 setup script..."
