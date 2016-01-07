@@ -1,7 +1,7 @@
 # Versions
 
-- [`5.6.16-fpm-1` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6.16-fpm-1/Dockerfile)
-- [`7.0.1-fpm-2` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.0.1-fpm-2/Dockerfile)
+- [`5.6.17-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6.17-fpm-0/Dockerfile)
+- [`7.0.2-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.0.2-fpm-0/Dockerfile)
 
 # Description
 
