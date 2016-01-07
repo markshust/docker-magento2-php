@@ -50,7 +50,7 @@ echo "Running Magento 2 setup script..."
 echo "Reindexing all indexes..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento indexer:reindex
 
-echo "Deploing static view files..."
+echo "Deploying static view files..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:static-content:deploy 
 
 echo "Applying ownership & proper permissions..."
