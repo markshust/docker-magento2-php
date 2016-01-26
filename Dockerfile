@@ -25,13 +25,9 @@ RUN docker-php-ext-install \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.0.0-alpha11
 
-RUN echo "*/1 * * * * /usr/local/bin/php /src/update/cron.php" | crontab - \
-  && (crontab -l ; echo "*/1 * * * * /usr/local/bin/php /src/bin/magento cron:run") | crontab - \
-  && (crontab -l ; echo "*/1 * * * * /usr/local/bin/php /src/bin/magento setup:cron:run") | crontab -
-
-RUN useradd -p $(openssl passwd -1 magento) magento \
-  && usermod -a -G www-data magento \
-  && usermod -a -G magento www-data
+RUN echo "*/1 * * * * su -c \"/usr/local/bin/php /src/update/cron.php\" -s /bin/sh www-data" | crontab - \
+  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php /src/bin/magento-php cron:run\" -s /bin/sh www-data") | crontab - \
+  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php /src/bin/magento-php setup:cron:run\" -s /bin/sh www-data") | crontab -
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_PORT 9000
@@ -44,7 +40,7 @@ ENV APP_MAGE_MODE default
 
 COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
-COPY bin/* /usr/local/bin/
+COPY bin/* /usr/local/bin/ 
 
 WORKDIR /src
 

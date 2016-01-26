@@ -1,7 +1,7 @@
 # Versions
 
-- [`5.6.17-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6.17-fpm-0/Dockerfile)
-- [`7.0.2-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.0.2-fpm-0/Dockerfile)
+- [`5.6.17-fpm-1` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6.17-fpm-1/Dockerfile)
+- [`7.0.2-fpm-1` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.0.2-fpm-1/Dockerfile)
 
 # Description
 
@@ -34,7 +34,7 @@ For example, if using [Dinghy](https://github.com/codekitchen/dinghy) on OS X, u
 
 ```
 FROM mageinferno/magento2-php:[TAG]
-RUN usermod -u 501 magento
+RUN www-data -u 501 magento
 ```
 
 Then build your custom image:

@@ -59,6 +59,11 @@ sed -i 's/0660/0664/g' /src/vendor/magento/framework/Filesystem/DriverInterface.
 find pub -type f -exec chmod 664 {} \;
 find pub -type d -exec chmod 775 {} \;
 find /src/var/generation -type d -exec chmod g+s {} \;
-chown -R magento:www-data /src
+cp /usr/local/bin/magento-php /src/bin/
+cp /usr/local/bin/magento /src/bin/
+chmod 775 /src/bin/magento-php
+chmod 775 /src/bin/magento
+
+chown -R www-data:www-data /src
 
 echo "The setup script has completed execution."
