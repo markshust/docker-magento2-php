@@ -10,4 +10,13 @@
 # Make sure this line comes last, otherwise find/replace will replace above vars
 [ ! -z "${PHP_PM}" ]                   && sed -i "s/PHP_PM/${PHP_PM}/" /usr/local/etc/php-fpm.conf
 
+if [ -d /src/bin ]; then
+  cp /usr/local/bin/magento /src/bin/
+  cp /usr/local/bin/magento-php /src/bin/
+fi
+
+# Start the cron service
+/usr/sbin/cron
+
+# Start the php-fpm service
 /usr/local/sbin/php-fpm
