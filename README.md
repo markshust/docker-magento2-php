@@ -34,7 +34,7 @@ For example, if using [Dinghy](https://github.com/codekitchen/dinghy) on OS X, u
 
 ```
 FROM mageinferno/magento2-php:[TAG]
-RUN www-data -u 501 magento
+RUN usermod -u 501 www-data
 ```
 
 Then build your custom image:
