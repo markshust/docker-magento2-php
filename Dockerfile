@@ -1,4 +1,4 @@
-FROM php:7.0.2-fpm
+FROM php:7.0.4-fpm
 MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
 RUN apt-get update \
@@ -23,7 +23,7 @@ RUN docker-php-ext-install \
   xsl \
   zip
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.0.0-alpha11
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN echo "*/1 * * * * su -c \"/usr/local/bin/php /src/update/cron.php\" -s /bin/sh www-data" | crontab - \
   && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php /src/bin/magento-php cron:run\" -s /bin/sh www-data") | crontab - \
@@ -38,10 +38,17 @@ ENV PHP_PM_MIN_SPARE_SERVERS 2
 ENV PHP_PM_MAX_SPARE_SERVERS 6
 ENV APP_MAGE_MODE default
 
+COPY conf/www.conf /usr/local/etc/php-fpm.d/
 COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
 COPY bin/* /usr/local/bin/ 
 
+RUN openssl rand -base64 32 | useradd magento -p --stdin \
+  && mkdir /src \
+  && usermod -g www-data magento
+
 WORKDIR /src
+
+EXPOSE 9000
 
 CMD ["/usr/local/bin/start"]
