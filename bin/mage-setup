@@ -14,19 +14,17 @@ if [ "$M2SETUP_USE_ARCHIVE" = true ]; then
     curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C /src
   fi
 else
-  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION /src
+  git clone $M2SETUP_PROJECT_URL /src
+  cd /src && git checkout $M2SETUP_VERSION && git reset --hard HEAD
 fi
 
 chmod +x /src/bin/magento
 
 if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
-  if [ "$M2SETUP_USE_ARCHIVE" != true ]; then
-    echo "Installing composer dependencies..."
-    /usr/local/bin/php -d memory_limit=2G /src/bin/magento sampledata:deploy
-
-    echo "Ignore the above error (bug in Magento), fixing with 'composer update'..."
-    /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer update --working-dir=/src
-  fi
+  git clone https://github.com/magento/magento2-sample-data.git /sample-data
+  cd /sample-data && git checkout 2.0 && git reset --hard HEAD
+  chmod 777 -R /sample-data
+  /usr/local/bin/php -d memory_limit=2G /sample-data/dev/tools/build-sample-data.php --ce-source="/src"
 
   M2SETUP_USE_SAMPLE_DATA_STRING="--use-sample-data"
 else
