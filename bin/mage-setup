@@ -38,12 +38,10 @@ echo "Running Magento 2 setup script..."
 
 if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
   echo "Install sample data..."
-  rm -fr /sample-data
-  git clone https://github.com/magento/magento2-sample-data.git /sample-data
-  cd /sample-data && git checkout 2.0
-  chmod 777 -R /sample-data
-  /usr/local/bin/php -d memory_limit=2G /sample-data/dev/tools/build-sample-data.php --ce-source="/src"
   
+  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer require magento/module-catalog-sample-data:100.0.2
+  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer require magento/module-cms-sample-data:100.0.2
+
   echo "Setup upgrade..."
   /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:upgrade
 
