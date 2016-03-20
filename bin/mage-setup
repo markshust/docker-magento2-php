@@ -64,6 +64,6 @@ cp /usr/local/bin/magento /src/bin/
 chmod 775 /src/bin/magento-php
 chmod 775 /src/bin/magento
 
-chown -R www-data:www-data /src
+#chown -R www-data:www-data /src
 
 echo "The setup script has completed execution."
