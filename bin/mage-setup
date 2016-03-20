@@ -14,22 +14,13 @@ if [ "$M2SETUP_USE_ARCHIVE" = true ]; then
     curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C /src
   fi
 else
+  rm -fr /src/*
   git clone $M2SETUP_PROJECT_URL /src
-  cd /src && git checkout $M2SETUP_VERSION && git reset --hard HEAD
+  cd /src && git checkout tags/$M2SETUP_VERSION
+  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer install -vvv
 fi
 
 chmod +x /src/bin/magento
-
-if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
-  git clone https://github.com/magento/magento2-sample-data.git /sample-data
-  cd /sample-data && git checkout 2.0 && git reset --hard HEAD
-  chmod 777 -R /sample-data
-  /usr/local/bin/php -d memory_limit=2G /sample-data/dev/tools/build-sample-data.php --ce-source="/src"
-
-  M2SETUP_USE_SAMPLE_DATA_STRING="--use-sample-data"
-else
-  M2SETUP_USE_SAMPLE_DATA_STRING=""
-fi
 
 echo "Running Magento 2 setup script..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:install \
@@ -42,11 +33,30 @@ echo "Running Magento 2 setup script..."
   --admin-lastname=$M2SETUP_ADMIN_LASTNAME \
   --admin-email=$M2SETUP_ADMIN_EMAIL \
   --admin-user=$M2SETUP_ADMIN_USER \
-  --admin-password=$M2SETUP_ADMIN_PASSWORD \
-  $M2SETUP_USE_SAMPLE_DATA_STRING
+  --admin-password=$M2SETUP_ADMIN_PASSWORD
+
+
+if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
+  echo "Install sample data..."
+  rm -fr /sample-data
+  git clone https://github.com/magento/magento2-sample-data.git /sample-data
+  cd /sample-data && git checkout 2.0
+  chmod 777 -R /sample-data
+  /usr/local/bin/php -d memory_limit=2G /sample-data/dev/tools/build-sample-data.php --ce-source="/src"
+  
+  echo "Setup upgrade..."
+  /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:upgrade
+
+  echo "Setup compile..."
+  /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:di:compile
+fi
+
 
 echo "Reindexing all indexes..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento indexer:reindex
+
+echo "Cache flush..."
+/usr/local/bin/php -d memory_limit=2G /src/bin/magento cache:flush
 
 echo "Deploying static view files..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:static-content:deploy 
@@ -61,7 +71,5 @@ cp /usr/local/bin/magento-php /src/bin/
 cp /usr/local/bin/magento /src/bin/
 chmod 775 /src/bin/magento-php
 chmod 775 /src/bin/magento
-
-#chown -R www-data:www-data /src
 
 echo "The setup script has completed execution."
