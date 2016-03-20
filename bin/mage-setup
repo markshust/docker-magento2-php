@@ -22,6 +22,15 @@ fi
 
 chmod +x /src/bin/magento
 
+if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
+  echo "Install sample data..."
+
+  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer require magento/module-catalog-sample-data:100.0.*
+  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer require magento/module-cms-sample-data:100.0.*
+
+  M2SETUP_USE_SAMPLE_DATA_STRING="--use-sample-data"
+fi
+
 echo "Running Magento 2 setup script..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:install \
   --db-host=$M2SETUP_DB_HOST \
@@ -33,22 +42,15 @@ echo "Running Magento 2 setup script..."
   --admin-lastname=$M2SETUP_ADMIN_LASTNAME \
   --admin-email=$M2SETUP_ADMIN_EMAIL \
   --admin-user=$M2SETUP_ADMIN_USER \
-  --admin-password=$M2SETUP_ADMIN_PASSWORD
+  --admin-password=$M2SETUP_ADMIN_PASSWORD \
+  $M2SETUP_USE_SAMPLE_DATA_STRING
 
 
-if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
-  echo "Install sample data..."
-  
-  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer require magento/module-catalog-sample-data:100.0.2
-  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer require magento/module-cms-sample-data:100.0.2
+echo "Setup upgrade..."
+/usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:upgrade
 
-  echo "Setup upgrade..."
-  /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:upgrade
-
-  echo "Setup compile..."
-  /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:di:compile
-fi
-
+echo "Setup compile..."
+/usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:di:compile
 
 echo "Reindexing all indexes..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento indexer:reindex
