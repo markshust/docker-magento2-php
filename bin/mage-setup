@@ -33,6 +33,7 @@ fi
 
 echo "Running Magento 2 setup script..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:install \
+  --backend-frontname=admin \
   --db-host=$M2SETUP_DB_HOST \
   --db-name=$M2SETUP_DB_NAME \
   --db-user=$M2SETUP_DB_USER \
