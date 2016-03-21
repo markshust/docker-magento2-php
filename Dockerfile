@@ -27,10 +27,9 @@ RUN docker-php-ext-install \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.0.0-alpha11
 
-RUN curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash - \
-    && sudo apt-get install -y nodejs \
-    && ln -s /usr/bin/nodejs /usr/bin/node \
-    && npm install -g grunt-cli
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g grunt-cli
 
 
 RUN echo "*/1 * * * * su -c \"/usr/local/bin/php /src/update/cron.php\" -s /bin/sh www-data" | crontab - \
