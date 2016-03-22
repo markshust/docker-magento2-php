@@ -47,11 +47,11 @@ echo "Running Magento 2 setup script..."
   $M2SETUP_USE_SAMPLE_DATA_STRING
 
 
-echo "Setup upgrade..."
-/usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:upgrade
+#echo "Setup upgrade..."
+#/usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:upgrade
 
-echo "Setup compile..."
-/usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:di:compile
+#echo "Setup compile..."
+#/usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:di:compile
 
 echo "Reindexing all indexes..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento indexer:reindex
