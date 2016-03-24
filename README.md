@@ -33,7 +33,7 @@ To use this image on other systems for local development, create a Dockerfile wi
 For example, if using [Dinghy](https://github.com/codekitchen/dinghy) on OS X, use:
 
 ```
-FROM mageinferno/magento2-php:[TAG]
+FROM komplizierte/docker-magento2-php
 RUN usermod -u 502 www-data
 ```
 
