@@ -53,9 +53,6 @@ echo "Reindexing all indexes..."
 echo "Cache flush..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento cache:flush
 
-echo "Deploying static view files..."
-/usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:static-content:deploy 
-
 echo "Set the 'developer' magento mode..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento deploy:mode:set developer
 
