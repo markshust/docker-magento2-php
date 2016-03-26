@@ -56,6 +56,9 @@ echo "Cache flush..."
 echo "Deploying static view files..."
 /usr/local/bin/php -d memory_limit=2G /src/bin/magento setup:static-content:deploy 
 
+echo "Set the 'developer' magento mode..."
+/usr/local/bin/php -d memory_limit=2G /src/bin/magento deploy:mode:set developer
+
 echo "Applying ownership & proper permissions..."
 sed -i 's/0770/0775/g' /src/vendor/magento/framework/Filesystem/DriverInterface.php
 sed -i 's/0660/0664/g' /src/vendor/magento/framework/Filesystem/DriverInterface.php
