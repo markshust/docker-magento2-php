@@ -1,8 +1,10 @@
 FROM php:7.0.2-fpm
-MAINTAINER Mark Shust <mark.shust@mageinferno.com>
+MAINTAINER Dmitry Schegolihin <d.shegolihin@gmail.com>
 
 RUN apt-get update \
   && apt-get install -y \
+    git \
+    npm \
     cron \
     libfreetype6-dev \
     libicu-dev \
@@ -25,9 +27,12 @@ RUN docker-php-ext-install \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.0.0-alpha11
 
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && apt-get install -y nodejs
+
 RUN echo "*/1 * * * * su -c \"/usr/local/bin/php /src/update/cron.php\" -s /bin/sh www-data" | crontab - \
   && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php /src/bin/magento-php cron:run\" -s /bin/sh www-data") | crontab - \
   && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php /src/bin/magento-php setup:cron:run\" -s /bin/sh www-data") | crontab -
+
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_PORT 9000
@@ -36,7 +41,7 @@ ENV PHP_PM_MAX_CHILDREN 10
 ENV PHP_PM_START_SERVERS 4
 ENV PHP_PM_MIN_SPARE_SERVERS 2
 ENV PHP_PM_MAX_SPARE_SERVERS 6
-ENV APP_MAGE_MODE default
+ENV APP_MAGE_MODE developer
 
 COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
