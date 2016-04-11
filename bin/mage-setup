@@ -22,6 +22,8 @@ fi
 
 chmod +x /src/bin/magento
 
+export COMPOSER_PROCESS_TIMEOUT=3000
+
 if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
   echo "Install sample data..."
   /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer require magento/module-catalog-sample-data:100.0.*
