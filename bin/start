@@ -16,7 +16,7 @@ if [ -d /src/bin ]; then
 fi
 
 # Start the cron service
-/usr/sbin/cron
+su -c "/usr/sbin/cron" -s /bin/sh www-data
 
 # Start the php-fpm service
 /usr/local/sbin/php-fpm

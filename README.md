@@ -1,7 +1,7 @@
 # Versions
 
-- [`5.6.17-fpm-1` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6.17-fpm-1/Dockerfile)
-- [`7.0.2-fpm-1` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.0.2-fpm-1/Dockerfile)
+- [`5.6.20-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6.20-fpm-0/Dockerfile)
+- [`7.0.5-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.0.5-fpm-0/Dockerfile)
 
 # Description
 
@@ -62,9 +62,9 @@ This image can run one-off PHP commands, such as:
 
 `docker run --rm --name php-test mageinferno/magento2-php echo "Hello world"`
 
-By default, you should place application code in `/src`, or attach a volume at that location. When doing so, you can then run Magento-specific commands such as the Magento CLI tool:
+By default, you should place application code in `/opt/www`, or attach a volume at that location. When doing so, you can then run Magento-specific commands such as the Magento CLI tool:
 
-`docker run --rm --name mysite -v /Users/username/Sites/mysite/src:/src mageinferno/magento2-php ./bin/magento`
+`docker run --rm --name mysite -v /Users/username/Sites/mysite:/opt/www mageinferno/magento2-php ./bin/magento`
 
 # Docker Compose
 

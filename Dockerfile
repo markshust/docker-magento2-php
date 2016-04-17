@@ -1,4 +1,4 @@
-FROM php:7.0.4-fpm
+FROM php:7.0.5-fpm
 MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
 RUN apt-get update \
@@ -43,12 +43,6 @@ COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
 COPY bin/* /usr/local/bin/ 
 
-RUN openssl rand -base64 32 | useradd magento -p --stdin \
-  && mkdir /src \
-  && usermod -g www-data magento
-
-WORKDIR /src
-
-EXPOSE 9000
+WORKDIR /opt/www
 
 CMD ["/usr/local/bin/start"]

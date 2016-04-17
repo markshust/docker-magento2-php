@@ -1,6 +1,6 @@
 #!/bin/sh
 echo "Initializing setup..."
-SOURCE_DIR=/src
+SOURCE_DIR=/opt/www
 
 cd $SOURCE_DIR
 
@@ -12,12 +12,12 @@ fi
 if [ "$M2SETUP_USE_ARCHIVE" = true ]; then
   echo "Downloading and untarring archive..."
   if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
-    curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-$M2SETUP_VERSION-sd.tar.gz | tar xzf - -o -C $SOURCE_DIR
+    curl -L http://pubfiles.nexcess.net/magento/ce-packages/magento2-with-samples-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C $SOURCE_DIR
   else
-    curl -L https://storage.googleapis.com/mageinferno-docker-magento2-setup/magento-ce-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C $SOURCE_DIR
+    curl -L http://pubfiles.nexcess.net/magento/ce-packages/magento2-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C $SOURCE_DIR
   fi
 else
-  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION $SOURCE_DIR
+  su -c "/usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION $SOURCE_DIR" -s /bin/sh www-data
 fi
 
 chmod +x $SOURCE_DIR/bin/magento
@@ -25,10 +25,10 @@ chmod +x $SOURCE_DIR/bin/magento
 if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
   if [ "$M2SETUP_USE_ARCHIVE" != true ]; then
     echo "Installing composer dependencies..."
-    /usr/local/bin/php -d memory_limit=2G $SOURCE_DIR/bin/magento sampledata:deploy
+    su -c "/usr/local/bin/php -d memory_limit=2G $SOURCE_DIR/bin/magento sampledata:deploy" -s /bin/sh www-data
 
     echo "Ignore the above error (bug in Magento), fixing with 'composer update'..."
-    /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer update --working-dir=$SOURCE_DIR
+    su -c "/usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer update --working-dir=$SOURCE_DIR" -s /bin/sh www-data
   fi
 
   M2SETUP_USE_SAMPLE_DATA_STRING="--use-sample-data"
@@ -50,18 +50,11 @@ echo "Running Magento 2 setup script..."
   --admin-password=$M2SETUP_ADMIN_PASSWORD \
   $M2SETUP_USE_SAMPLE_DATA_STRING
 
-echo "Reindexing all indexes..."
-/usr/local/bin/php -d memory_limit=2G $SOURCE_DIR/bin/magento indexer:reindex
-
-echo "Deploying static view files..."
-/usr/local/bin/php -d memory_limit=2G $SOURCE_DIR/bin/magento setup:static-content:deploy 
-
 echo "Applying ownership & proper permissions..."
-find $SOURCE_DIR/var/generation -type d -exec chmod g+s {} \;
 cp /usr/local/bin/magento-php $SOURCE_DIR/bin/
 cp /usr/local/bin/magento $SOURCE_DIR/bin/
 chmod 775 $SOURCE_DIR/bin/magento-php
 chmod 775 $SOURCE_DIR/bin/magento
-chown -R magento:www-data $SOURCE_DIR
+chown -R www-data:www-data $SOURCE_DIR
 
 echo "The setup script has completed execution."
