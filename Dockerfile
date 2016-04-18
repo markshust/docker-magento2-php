@@ -25,9 +25,9 @@ RUN docker-php-ext-install \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN echo "*/1 * * * * su -c \"/usr/local/bin/php /src/update/cron.php\" -s /bin/sh www-data" | crontab - \
-  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php /src/bin/magento-php cron:run\" -s /bin/sh www-data") | crontab - \
-  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php /src/bin/magento-php setup:cron:run\" -s /bin/sh www-data") | crontab -
+RUN echo "*/1 * * * * su -c \"/usr/local/bin/php /srv/update/cron.php\" -s /bin/sh www-data" | crontab - \
+  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php /srv/bin/magento-php cron:run\" -s /bin/sh www-data") | crontab - \
+  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php /srv/bin/magento-php setup:cron:run\" -s /bin/sh www-data") | crontab -
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_PORT 9000
@@ -37,12 +37,13 @@ ENV PHP_PM_START_SERVERS 4
 ENV PHP_PM_MIN_SPARE_SERVERS 2
 ENV PHP_PM_MAX_SPARE_SERVERS 6
 ENV APP_MAGE_MODE default
+ENV WWW_DIR /srv/www
 
 COPY conf/www.conf /usr/local/etc/php-fpm.d/
 COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
-COPY bin/* /usr/local/bin/ 
+COPY bin/* /usr/local/bin/
 
-WORKDIR /opt/www
+WORKDIR $WWW_DIR
 
 CMD ["/usr/local/bin/start"]

@@ -1,10 +1,9 @@
 #!/bin/sh
 echo "Initializing setup..."
-SOURCE_DIR=/opt/www
 
-cd $SOURCE_DIR
+cd $WWW_DIR
 
-if [ -f $SOURCE_DIR/app/etc/config.php ] || [ -f $SOURCE_DIR/app/etc/env.php ]; then
+if [ -f $WWW_DIR/app/etc/config.php ] || [ -f $WWW_DIR/app/etc/env.php ]; then
   echo "It appears Magento is already installed (app/etc/config.php or app/etc/env.php exist). Exiting setup..."
   exit
 fi
@@ -12,23 +11,23 @@ fi
 if [ "$M2SETUP_USE_ARCHIVE" = true ]; then
   echo "Downloading and untarring archive..."
   if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
-    curl -L http://pubfiles.nexcess.net/magento/ce-packages/magento2-with-samples-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C $SOURCE_DIR
+    curl -L http://pubfiles.nexcess.net/magento/ce-packages/magento2-with-samples-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C $WWW_DIR
   else
-    curl -L http://pubfiles.nexcess.net/magento/ce-packages/magento2-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C $SOURCE_DIR
+    curl -L http://pubfiles.nexcess.net/magento/ce-packages/magento2-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C $WWW_DIR
   fi
 else
-  su -c "/usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION $SOURCE_DIR" -s /bin/sh www-data
+  su -c "/usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION $WWW_DIR" -s /bin/sh www-data
 fi
 
-chmod +x $SOURCE_DIR/bin/magento
+chmod +x $WWW_DIR/bin/magento
 
 if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
   if [ "$M2SETUP_USE_ARCHIVE" != true ]; then
     echo "Installing composer dependencies..."
-    su -c "/usr/local/bin/php -d memory_limit=2G $SOURCE_DIR/bin/magento sampledata:deploy" -s /bin/sh www-data
+    su -c "/usr/local/bin/php -d memory_limit=2G $WWW_DIR/bin/magento sampledata:deploy" -s /bin/sh www-data
 
     echo "Ignore the above error (bug in Magento), fixing with 'composer update'..."
-    su -c "/usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer update --working-dir=$SOURCE_DIR" -s /bin/sh www-data
+    su -c "/usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer update --working-dir=$WWW_DIR" -s /bin/sh www-data
   fi
 
   M2SETUP_USE_SAMPLE_DATA_STRING="--use-sample-data"
@@ -37,7 +36,7 @@ else
 fi
 
 echo "Running Magento 2 setup script..."
-/usr/local/bin/php -d memory_limit=2G $SOURCE_DIR/bin/magento setup:install \
+/usr/local/bin/php -d memory_limit=2G $WWW_DIR/bin/magento setup:install \
   --db-host=$M2SETUP_DB_HOST \
   --db-name=$M2SETUP_DB_NAME \
   --db-user=$M2SETUP_DB_USER \
@@ -51,10 +50,7 @@ echo "Running Magento 2 setup script..."
   $M2SETUP_USE_SAMPLE_DATA_STRING
 
 echo "Applying ownership & proper permissions..."
-cp /usr/local/bin/magento-php $SOURCE_DIR/bin/
-cp /usr/local/bin/magento $SOURCE_DIR/bin/
-chmod 775 $SOURCE_DIR/bin/magento-php
-chmod 775 $SOURCE_DIR/bin/magento
-chown -R www-data:www-data $SOURCE_DIR
+chmod 775 $WWW_DIR/bin/magento
+chown -R www-data:www-data $WWW_DIR
 
 echo "The setup script has completed execution."

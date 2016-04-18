@@ -5,15 +5,18 @@
 [ ! -z "${PHP_PM_START_SERVERS}" ]     && sed -i "s/PHP_PM_START_SERVERS/${PHP_PM_START_SERVERS}/" /usr/local/etc/php-fpm.conf
 [ ! -z "${PHP_PM_MIN_SPARE_SERVERS}" ] && sed -i "s/PHP_PM_MIN_SPARE_SERVERS/${PHP_PM_MIN_SPARE_SERVERS}/" /usr/local/etc/php-fpm.conf
 [ ! -z "${PHP_PM_MAX_SPARE_SERVERS}" ] && sed -i "s/PHP_PM_MAX_SPARE_SERVERS/${PHP_PM_MAX_SPARE_SERVERS}/" /usr/local/etc/php-fpm.conf
-[ ! -z "${APP_MAGE_MODE}" ]            && sed -i "s/APP_MAGE_MODE/${APP_MAGE_MODE}/" /usr/local/etc/php-fpm.conf
-
 # Make sure this line comes last, otherwise find/replace will replace above vars
 [ ! -z "${PHP_PM}" ]                   && sed -i "s/PHP_PM/${PHP_PM}/" /usr/local/etc/php-fpm.conf
+[ ! -z "${APP_MAGE_MODE}" ]            && sed -i "s/APP_MAGE_MODE/${APP_MAGE_MODE}/" /usr/local/etc/php-fpm.conf
 
-if [ -d /src/bin ]; then
-  cp /usr/local/bin/magento /src/bin/
-  cp /usr/local/bin/magento-php /src/bin/
+if [ -d $WWW_DIR/bin ] && [ -f $WWW_DIR/bin/magento ]; then
+  mv $WWW_DIR/bin/magento $WWW_DIR/bin/magento-php
+  cp /usr/local/bin/magento $WWW_DIR/bin/
 fi
+
+echo "*/1 * * * * su -c \"/usr/local/bin/php $WWW_DIR/update/cron.php\" -s /bin/sh www-data" | crontab - \
+  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php $WWW_DIR/bin/magento-php cron:run\" -s /bin/sh www-data") | crontab - \
+  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php $WWW_DIR/bin/magento-php setup:cron:run\" -s /bin/sh www-data") | crontab -
 
 # Start the cron service
 su -c "/usr/sbin/cron" -s /bin/sh www-data
