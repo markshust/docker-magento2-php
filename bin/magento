@@ -1,2 +1,2 @@
 #!/bin/bash
-su -c "/usr/local/bin/php $WWW_DIR/bin/magento-php $*" -s /bin/sh www-data
+su -c "/usr/local/bin/php /srv/www/bin/magento-php $*" -s /bin/sh www-data

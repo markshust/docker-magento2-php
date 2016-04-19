@@ -1,6 +1,7 @@
 #!/bin/sh
 echo "Initializing setup..."
 
+WWW_DIR=/srv/www
 cd $WWW_DIR
 
 if [ -f $WWW_DIR/app/etc/config.php ] || [ -f $WWW_DIR/app/etc/env.php ]; then
