@@ -1,7 +1,7 @@
 # Versions
 
-- [`5.6.17-fpm-1` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6.17-fpm-1/Dockerfile)
-- [`7.0.2-fpm-1` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.0.2-fpm-1/Dockerfile)
+- [`5.6.20-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6.20-fpm-0/Dockerfile)
+- [`7.0.5-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.0.5-fpm-0/Dockerfile)
 
 # Description
 
@@ -24,30 +24,11 @@ This image also installs the following PHP extensions, which are the minimally r
 - `xsl`
 - `zip`
 
-# How to use this image?
-
-This image will work out-of-the-box with Linux-based systems.
-
-To use this image on other systems for local development, create a Dockerfile with anything specific to your local development platform.
-
-For example, if using [Dinghy](https://github.com/codekitchen/dinghy) on OS X, use:
-
-```
-FROM mageinferno/magento2-php:[TAG]
-RUN usermod -u 501 www-data
-```
-
-Then build your custom image:
-
-```
-docker build -t myname/php .
-```
-
 # Variables
 
 The following variables may be set to control the PHP environment:
 
-- `PHP_MEMORY_LIMIT`: (default `2048M`) Set the memory_limit of php.ini
+- `PHP_MEMORY_LIMIT`: (default `2G`) Set the memory_limit of php.ini
 - `PHP_PORT`: (default: `9000`) Set a custom PHP port
 - `PHP_PM`: (default `dynamic`) Set the process manager
 - `PHP_PM_MAX_CHILDREN`: (default: `10`) Set the max number of children processes
@@ -62,9 +43,9 @@ This image can run one-off PHP commands, such as:
 
 `docker run --rm --name php-test mageinferno/magento2-php echo "Hello world"`
 
-By default, you should place application code in `/src`, or attach a volume at that location. When doing so, you can then run Magento-specific commands such as the Magento CLI tool:
+Application code is placed in `/srv/www`. You can also attach a volume to that location, then run Magento-specific commands such as the Magento CLI tool:
 
-`docker run --rm --name mysite -v /Users/username/Sites/mysite/src:/src mageinferno/magento2-php ./bin/magento`
+`docker run --rm --name mysite -v /Users/username/Sites/mysite/app/code:/srv/www/app/code mageinferno/magento2-php:5.6.20-fpm-0 ./bin/magento`
 
 # Docker Compose
 
