@@ -24,25 +24,6 @@ This image also installs the following PHP extensions, which are the minimally r
 - `xsl`
 - `zip`
 
-# How to use this image?
-
-This image will work out-of-the-box with Linux-based systems.
-
-To use this image on other systems for local development, create a Dockerfile with anything specific to your local development platform.
-
-For example, if using [Dinghy](https://github.com/codekitchen/dinghy) on OS X, use:
-
-```
-FROM mageinferno/magento2-php:[TAG]
-RUN usermod -u 501 www-data
-```
-
-Then build your custom image:
-
-```
-docker build -t myname/php .
-```
-
 # Variables
 
 The following variables may be set to control the PHP environment:
@@ -62,9 +43,9 @@ This image can run one-off PHP commands, such as:
 
 `docker run --rm --name php-test mageinferno/magento2-php echo "Hello world"`
 
-By default, you should place application code in `/opt/www`, or attach a volume at that location. When doing so, you can then run Magento-specific commands such as the Magento CLI tool:
+Application code is placed in `/srv/www`. You can also attach a volume to that location, then run Magento-specific commands such as the Magento CLI tool:
 
-`docker run --rm --name mysite -v /Users/username/Sites/mysite:/opt/www mageinferno/magento2-php ./bin/magento`
+`docker run --rm --name mysite -v /Users/username/Sites/mysite/app/code:/srv/www/app/code mageinferno/magento2-php:7.0.5-fpm-0 ./bin/magento`
 
 # Docker Compose
 
