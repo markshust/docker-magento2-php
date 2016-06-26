@@ -1,8 +1,7 @@
-FROM php:7.0.5-fpm
+FROM php:7.0.8-fpm
 MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
-RUN apt-get update \
-  && apt-get install -y \
+RUN apt-get update && apt-get install -y \
     cron \
     libfreetype6-dev \
     libicu-dev \
@@ -23,7 +22,11 @@ RUN docker-php-ext-install \
   xsl \
   zip
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.0.1
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- \
+      --install-dir=/usr/local/bin \
+      --filename=composer \
+      --version=1.1.2
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_PORT 9000
