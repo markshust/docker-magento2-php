@@ -1,7 +1,8 @@
 FROM php:7.0.8-fpm
 MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update \
+  && apt-get install -y \
     cron \
     libfreetype6-dev \
     libicu-dev \
