@@ -21,7 +21,8 @@ RUN docker-php-ext-install \
   mcrypt \
   pdo_mysql \
   xsl \
-  zip
+  zip \
+  soap
 
 RUN curl -sS https://getcomposer.org/installer | \
     php -- \
