@@ -6,9 +6,9 @@ if [ -d $WWW_DIR/bin ] && [ ! -f $WWW_DIR/bin/magento-php ]; then
   cp /usr/local/bin/magento $WWW_DIR/bin/
 fi
 
-echo "*/1 * * * * su -c \"/usr/local/bin/php $WWW_DIR/update/cron.php\" -s /bin/sh www-data" | crontab - \
-  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php $WWW_DIR/bin/magento-php cron:run\" -s /bin/sh www-data") | crontab - \
-  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php $WWW_DIR/bin/magento-php setup:cron:run\" -s /bin/sh www-data") | crontab -
+echo "*/1 * * * * su -c \"/usr/local/bin/php $WWW_DIR/update/cron.php\" -s /bin/sh www-data > /proc/1/fd/2 2>&1" | crontab - \
+  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php $WWW_DIR/bin/magento-php cron:run\" -s /bin/sh www-data > /proc/1/fd/2 2>&1") | crontab - \
+  && (crontab -l ; echo "*/1 * * * * su -c \"/usr/local/bin/php $WWW_DIR/bin/magento-php setup:cron:run\" -s /bin/sh www-data > /proc/1/fd/2 2>&1") | crontab -
 
 # Start the cron service
 /usr/sbin/cron
