@@ -44,9 +44,9 @@ This image can run one-off PHP commands, such as:
 
 `docker run --rm --name php-test mageinferno/magento2-php echo "Hello world"`
 
-Application code is placed in `/srv/www`. You can also attach a volume to that location, then run Magento-specific commands such as the Magento CLI tool:
+Application code is placed in `/var/www/html`. You can also attach a volume to that location, then run Magento-specific commands such as the Magento CLI tool:
 
-`docker run --rm --name mysite -v /Users/username/Sites/mysite/app/code:/srv/www/app/code mageinferno/magento2-php:7.0.5-fpm-0 ./bin/magento`
+`docker run --rm --name mysite -v /Users/username/Sites/mysite/app/code:/var/www/html/app/code mageinferno/magento2-php:7.0.5-fpm-0 ./bin/magento`
 
 # Docker Compose
 
