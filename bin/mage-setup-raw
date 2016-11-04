@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "Initializing setup..."
 
-cd /srv/www
+cd /var/www/html
 
 if [ -f ./app/etc/config.php ] || [ -f ./app/etc/env.php ]; then
   echo "It appears Magento is already installed (app/etc/config.php or app/etc/env.php exist). Exiting setup..."
@@ -16,7 +16,8 @@ if [ "$M2SETUP_USE_ARCHIVE" = true ]; then
     curl -L http://pubfiles.nexcess.net/magento/ce-packages/magento2-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C .
   fi
 else
-  /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION .
+  /usr/local/bin/php /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION .
+  ln -s /var/www/.composer ./var/composer_home
 fi
 
 chmod +x ./bin/magento
@@ -24,10 +25,8 @@ chmod +x ./bin/magento
 if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
   if [ "$M2SETUP_USE_ARCHIVE" != true ]; then
     echo "Installing composer dependencies..."
-    /usr/local/bin/php -d memory_limit=2G ./bin/magento sampledata:deploy
-
-    echo "Ignore the above error (bug in Magento), fixing with 'composer update'..."
-    /usr/local/bin/php -d memory_limit=2G /usr/local/bin/composer update
+    /usr/local/bin/php /usr/local/bin/composer update
+    /usr/local/bin/php ./bin/magento sampledata:deploy
   fi
 
   M2SETUP_USE_SAMPLE_DATA_STRING="--use-sample-data"
@@ -36,7 +35,7 @@ else
 fi
 
 echo "Running Magento 2 setup script..."
-/usr/local/bin/php -d memory_limit=2G ./bin/magento setup:install \
+/usr/local/bin/php ./bin/magento setup:install \
   --db-host=$M2SETUP_DB_HOST \
   --db-name=$M2SETUP_DB_NAME \
   --db-user=$M2SETUP_DB_USER \
