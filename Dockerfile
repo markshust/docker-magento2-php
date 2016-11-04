@@ -1,4 +1,4 @@
-FROM php:7.0.8-fpm
+FROM php:7.0.12-fpm
 MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
 RUN apt-get update \
@@ -25,10 +25,7 @@ RUN docker-php-ext-install \
   zip
 
 RUN curl -sS https://getcomposer.org/installer | \
-    php -- \
-      --install-dir=/usr/local/bin \
-      --filename=composer \
-      --version=1.1.2
+  php -- --install-dir=/usr/local/bin --filename=composer
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_PORT 9000
