@@ -24,6 +24,7 @@ This image also installs the following PHP extensions, which are the minimally r
 - `soap`
 - `xsl`
 - `zip`
+- `bcmath`
 
 # Variables
 
