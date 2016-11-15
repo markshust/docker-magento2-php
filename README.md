@@ -16,6 +16,7 @@ This image installs the following base packages:
 
 This image also installs the following PHP extensions, which are the minimally required extensions to install and run Magento 2:
 
+- `bcmath`
 - `gd`
 - `intl`
 - `mbstring`
@@ -24,7 +25,6 @@ This image also installs the following PHP extensions, which are the minimally r
 - `soap`
 - `xsl`
 - `zip`
-- `bcmath`
 
 # Variables
 
