@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-fpm
+FROM php:7.1-fpm
 MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
 RUN apt-get update \
