@@ -1,6 +1,10 @@
 FROM php:$VERSION
 MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
+# Setup User to match Host User, and give superuser permissions
+ARG USER_ID=1000
+RUN usermod -u ${USER_ID} -aG sudo www-data && echo 'www-data ALL=(ALL) NOPASSWD: ALL'
+
 RUN apt-get update \
   && apt-get install -y \
     cron \
