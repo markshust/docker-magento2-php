@@ -16,7 +16,11 @@ if [ "$M2SETUP_USE_ARCHIVE" = true ]; then
     curl -L http://pubfiles.nexcess.net/magento/ce-packages/magento2-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C .
   fi
 else
-  /usr/local/bin/php /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION .
+  if [ "$M2SETUP_USE_COMPOSER_ENTERPRISE" = true ]; then
+      /usr/local/bin/php /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-enterprise-edition=$M2SETUP_VERSION .
+    else
+      /usr/local/bin/php /usr/local/bin/composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$M2SETUP_VERSION .
+  fi
   ln -s /var/www/.composer ./var/composer_home
 fi
 

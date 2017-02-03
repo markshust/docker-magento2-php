@@ -1,4 +1,4 @@
-FROM php:7.0-fpm
+FROM php:7.1-fpm-fpm
 MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
 RUN apt-get update \
@@ -15,6 +15,7 @@ RUN docker-php-ext-configure \
   gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 
 RUN docker-php-ext-install \
+  bcmath \
   gd \
   intl \
   mbstring \

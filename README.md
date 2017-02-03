@@ -2,6 +2,7 @@
 
 - [`5.6-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6-fpm-0/Dockerfile)
 - [`7.0-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.0-fpm-0/Dockerfile)
+- [`7.1-fpm-0` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/7.1-fpm-0/Dockerfile)
 
 # Description
 
@@ -47,7 +48,7 @@ This image can run one-off PHP commands, such as:
 
 Application code is placed in `/var/www/html`. You can also attach a volume to that location, then run Magento-specific commands such as the Magento CLI tool:
 
-`docker run --rm --name mysite -v /Users/username/Sites/mysite/app/code:/var/www/html/app/code mageinferno/magento2-php:7.0-fpm-0 ./bin/magento`
+`docker run --rm --name mysite -v /Users/username/Sites/mysite/app/code:/var/www/html/app/code mageinferno/magento2-php:7.1-fpm-0 ./bin/magento`
 
 # Docker Compose
 
