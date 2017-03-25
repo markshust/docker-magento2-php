@@ -23,7 +23,8 @@ RUN docker-php-ext-install \
   pdo_mysql \
   soap \
   xsl \
-  zip
+  zip \
+  opcache
 
 RUN curl -sS https://getcomposer.org/installer | \
   php -- --install-dir=/usr/local/bin --filename=composer
