@@ -50,6 +50,9 @@ echo "Running Magento 2 setup script..."
   --admin-email=$M2SETUP_ADMIN_EMAIL \
   --admin-user=$M2SETUP_ADMIN_USER \
   --admin-password=$M2SETUP_ADMIN_PASSWORD \
+  --language=$M2SETUP_LANGUAGE \
+  --currency=$M2SETUP_CURRENCY \
+  --timezone=$M2SETUP_TIMEZONE \
   $M2SETUP_USE_SAMPLE_DATA_STRING
 
 echo "The setup script has completed execution."
