@@ -21,6 +21,7 @@ RUN docker-php-ext-install \
   intl \
   mbstring \
   mcrypt \
+  opcache \
   pdo_mysql \
   soap \
   xsl \
