@@ -1,16 +1,16 @@
 FROM php:$VERSION
 MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
-RUN apt-get update \
-  && apt-get install -y \
-    cron \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
-    libmcrypt-dev \
-    libpng12-dev \
-    libxslt1-dev \
-    zip
+RUN apt-get update && apt-get install -y \
+  cron \
+  libfreetype6-dev \
+  libicu-dev \
+  libjpeg62-turbo-dev \
+  libmcrypt-dev \
+  libpng12-dev \
+  libxslt1-dev \
+  mysql-client \
+  zip
 
 RUN docker-php-ext-configure \
   gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
