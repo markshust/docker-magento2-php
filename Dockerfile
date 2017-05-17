@@ -20,11 +20,11 @@ RUN docker-php-ext-install \
   intl \
   mbstring \
   mcrypt \
+  opcache \
   pdo_mysql \
   soap \
   xsl \
-  zip \
-  opcache
+  zip
 
 RUN curl -sS https://getcomposer.org/installer | \
   php -- --install-dir=/usr/local/bin --filename=composer
