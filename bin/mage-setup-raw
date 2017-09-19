@@ -38,6 +38,15 @@ else
   M2SETUP_USE_SAMPLE_DATA_STRING=""
 fi
 
+echo -n "Waiting for db"
+touch database_not_ready
+while [ -e database_not_ready ]; do
+    mysql --host=$M2SETUP_DB_HOST --user=$M2SETUP_DB_USER --password=$M2SETUP_DB_PASSWORD  --execute="show tables" $M2SETUP_DB_NAME >/dev/null 2>&1 && rm database_not_ready
+    sleep 1s
+    echo -n "."
+done
+echo
+
 echo "Running Magento 2 setup script..."
 /usr/local/bin/php ./bin/magento setup:install \
   --db-host=$M2SETUP_DB_HOST \
