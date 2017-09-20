@@ -8,7 +8,21 @@ if [ -f ./app/etc/config.php ] || [ -f ./app/etc/env.php ]; then
   exit
 fi
 
-if [ "$M2SETUP_USE_ARCHIVE" = true ]; then
+if [ "$M2SETUP_USE_EXISTING_MAGENTO" = true ]; then
+  if [ ! -d ./app/code/Magento ]; then
+    echo "\$M2SETUP_USE_EXISTING_MAGENTO specified, but did not find app/code/Magento - aborting."
+    exit
+  fi
+  echo 'Using existing magento codebase.';
+  composer install 
+  if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
+    if [ ! -d magento2-sample-data ]; then
+        git clone https://github.com/magento/magento2-sample-data.git
+    fi
+    (cd magento2-sample-data/dev/tools && php -f build-sample-data.php -- --ce-source=/var/www/html)
+    (cd magento2-sample-data && find . -type d -exec chmod g+ws {} \; ) 
+  fi
+elif [ "$M2SETUP_USE_ARCHIVE" = true ]; then
   echo "Downloading and untarring archive..."
   if [ "$M2SETUP_USE_SAMPLE_DATA" = true ]; then
     curl -L http://pubfiles.nexcess.net/magento/ce-packages/magento2-with-samples-$M2SETUP_VERSION.tar.gz | tar xzf - -o -C .

@@ -3,6 +3,7 @@ MAINTAINER Mark Shust <mark.shust@mageinferno.com>
 
 RUN apt-get update && apt-get install -y \
   cron \
+  git \
   libfreetype6-dev \
   libicu-dev \
   libjpeg62-turbo-dev \
