@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This repo has been migrated into https://github.com/markoshust/magento2-docker - please see this repo for future updates!
+
 # Versions
 
 - [`5.6-fpm-1` (_Dockerfile_)](https://github.com/mageinferno/docker-magento2-php/tree/5.6-fpm-1/Dockerfile)
